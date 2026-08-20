@@ -1,0 +1,34 @@
+<!doctype html><html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ととのう｜AI悩み整理チャット</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="chat.css"><link rel="stylesheet" href="routes.css"></head><body>
+<header><a class="brand" href="#"><span class="logo"><i></i><i></i><i></i></span>ととのう</a><div class="header-center"><b>AI悩み整理チャット</b><span><i></i>会話中</span></div><button class="avatar">佐</button></header>
+<main>
+  <aside>
+    <button class="new-chat" id="newChat">＋　新しく整理する</button>
+    <nav><a class="active" id="chatNav">✦　悩みを整理する</a><a id="recordsNav">◷　整理した記録</a><a id="helpNav">♧　使い方・ヒント</a></nav>
+    <div class="history"><p>最近の会話</p><button class="historyItem"><b>経費申請について</b><small>今日</small></button><button class="historyItem"><b>会議資料の作り方</b><small>昨日</small></button></div>
+    <div class="privacy">🔒<span><b>この会話は非公開です</b><small>あなたが共有しない限り、他の人には見られません。</small></span></div>
+  </aside>
+  <section class="chat-shell">
+    <div class="chat-top"><div><span class="ai-avatar">✦</span><p><b>ととのう AI</b><small>悩みの整理をお手伝いします</small></p></div><button aria-label="メニュー">•••</button></div>
+    <div class="messages" id="messages" aria-live="polite">
+      <div class="day"><span>今日</span></div>
+      <div class="message ai"><span class="ai-avatar">✦</span><div><p>こんにちは。今日はどんなことでモヤモヤしていますか？</p><p>うまくまとまっていなくても大丈夫です。思いつくまま話してください。</p><time>10:24</time></div></div>
+      <div class="suggestions" id="suggestions"><button>仕事の進め方で迷っている</button><button>何を質問すればいいか分からない</button><button>ミスをしてしまって不安</button></div>
+    </div>
+    <div class="composer">
+      <div class="input-wrap"><textarea id="chatInput" rows="1" placeholder="メッセージを入力…"></textarea><button class="send" id="sendButton" aria-label="送信">➤</button></div>
+      <small>Enterで送信　・　Shift + Enterで改行　<button id="analyzeNow">ここまでの会話を分析</button></small>
+    </div>
+  </section>
+  <aside class="guide">
+    <p class="label">整理の進み具合</p>
+    <div class="meter"><span id="meter"></span></div><b id="progressText">まずは話してみましょう</b>
+    <ol><li class="current"><i>1</i><span><b>いまの状況</b><small>何が起きている？</small></span></li><li><i>2</i><span><b>試したこと</b><small>どこまで確認した？</small></span></li><li><i>3</i><span><b>困っている点</b><small>何が分からない？</small></span></li><li><i>4</i><span><b>悩みを整理</b><small>次の一歩を見つける</small></span></li></ol>
+    <div class="guide-tip"><span>💡</span><p><b>答えに迷ったら</b><small>「よくわからない」と答えても大丈夫。AIが別の聞き方をします。</small></p></div>
+  </aside>
+</main>
+<template id="analysisTemplate"><div class="analysis-card"><div class="analysis-title"><span>✦</span><div><small>会話から見えてきたこと</small><b id="core"></b></div></div><div class="analysis-items"><section><label>○</label><div><b>わかっていること</b><p id="facts"></p></div></section><section><label>?</label><div><b>まだ分からないこと</b><p id="unknown"></p></div></section><section><label>✓</label><div><b>すでに試したこと</b><p id="tried"></p></div></section></div><div class="next"><small>おすすめの次の一歩</small><b id="nextAction"></b></div><div class="route-label">このあと、どうしますか？</div><div class="route-actions"><button id="openDatabase"><span>⌕</span><div><b>社内情報から答えを探す</b><small>AIがマニュアルや過去事例を検索</small></div><i>→</i></button><button id="openEmail"><span>✉</span><div><b>先輩に確認する</b><small>整理した内容からメールを作成</small></div><i>→</i></button></div><div class="analysis-actions"><button id="copyResult">結果をコピー</button><button id="saveResult">この整理を記録する</button></div></div></template>
+<section class="route-page" id="emailPage"><div class="route-header"><button class="backChat">← チャットに戻る</button><div><small>STEP 2</small><b>先輩に確認する</b></div><span></span></div><div class="route-content"><div class="route-intro"><span class="route-icon">✉</span><div><h1>確認メールを作成しました</h1><p>会話で整理した内容をもとにしています。送信前に自由に編集できます。</p></div></div><div class="mail-card"><label>宛先<select id="mailTo"><option>田中さん（OJT担当）</option><option>チームの先輩</option><option>直属の上長</option></select></label><label>件名<input id="mailSubject"></label><label>本文<textarea id="mailBody"></textarea></label><div class="mail-actions"><button class="backChat secondary-button">キャンセル</button><button id="sendMail">この内容で確認メールを送る　→</button></div></div></div></section>
+<section class="route-page" id="databasePage"><div class="route-header"><button class="backChat">← チャットに戻る</button><div><small>STEP 2</small><b>社内情報から答えを探す</b></div><span></span></div><div class="route-content"><div class="route-intro"><span class="route-icon">⌕</span><div><h1>社内ナレッジを検索</h1><p>整理した悩みをもとに、マニュアルや過去の事例からAIが回答します。</p></div></div><div class="search-query"><small>検索する内容</small><b id="searchQuery"></b></div><button class="database-search" id="databaseSearch">社内データベースを検索する　→</button><div class="database-result hidden" id="databaseResult"><div class="answer-head"><span>✦</span><div><small>社内情報をもとにした回答</small><b id="answerTitle"></b></div></div><p id="databaseAnswer"></p><div class="sources"><small>参照した社内情報</small><button>📄 業務マニュアル / 基本手順.pdf <span>→</span></button><button>▤ よくある質問と回答 / FAQ <span>→</span></button></div><div class="notice">この回答はAIが社内情報を要約したものです。重要な判断は担当者にも確認してください。</div><button class="ask-after" id="askAfter">解決しないので先輩に確認する</button></div></div></section>
+<section class="route-page" id="recordsPage"><div class="route-header"><button class="backChat">← チャットに戻る</button><div><b>整理した記録</b></div><span></span></div><div class="route-content"><div class="route-intro"><span class="route-icon">◷</span><div><h1>これまでに整理した悩み</h1><p>保存した分析結果をあとから確認できます。</p></div></div><div class="mail-card" id="recordsList"></div></div></section>
+<section class="route-page" id="helpPage"><div class="route-header"><button class="backChat">← チャットに戻る</button><div><b>使い方・ヒント</b></div><span></span></div><div class="route-content"><div class="route-intro"><span class="route-icon">♧</span><div><h1>うまく話す必要はありません</h1><p>AIが会話しながら、必要な情報を一緒に整理します。</p></div></div><div class="mail-card help-list"><h3>1. モヤモヤをそのまま入力</h3><p>文章になっていなくても大丈夫です。</p><h3>2. AIの質問に答える</h3><p>分からない場合は「分からない」と回答できます。</p><h3>3. 分析結果から次の行動を選ぶ</h3><p>社内情報を検索するか、先輩への確認メールを作れます。</p></div></div></section>
+<div class="toast" id="toast"></div><script src="app.js?v=5"></script></body></html>
